@@ -5,7 +5,7 @@ export const poseVisualizerGame: BaseGame = {
   metadata: {
     id: "pose-visualizer",
     name: "2048",
-    description: "Real-time Detection",
+    description: "Hand Swiping",
     splashArt: "/2048-stockimg.png"
   },
 

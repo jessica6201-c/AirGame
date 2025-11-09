@@ -89,7 +89,7 @@ export default function App() {
           <h1 className="arcade-title mb-2">AIRGAME</h1>
           
           {/* Subtitle */}
-          <p className="arcade-subtitle mb-12">SELECT A GAME TO PLAY USING POSE DETECTION</p>
+          <p className="arcade-subtitle mb-12">SELECT A GAME TO PLAY USING GESTURES</p>
         </div>
         
         {/* Game Cards Fan Layout */}
