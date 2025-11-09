@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import { BaseGame, GameContext } from "@/app/types/game";
 import { usePoseDetection } from "@/app/hooks/usePoseDetection";
 import { useCamera } from "@/app/hooks/useCamera";
+import { useLandmarkSmoothing } from "@/app/hooks/useLandmarkSmoothing";
+import { usePoseInterpolation } from "@/app/hooks/usePoseInterpolation";
 
 interface GameContainerProps {
   game: BaseGame;
@@ -12,11 +14,14 @@ interface GameContainerProps {
 export default function GameContainer({ game }: GameContainerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
+  const detectionFrameRef = useRef<number | undefined>(undefined);
   const lastVideoTimeRef = useRef(-1);
   const gameInitializedRef = useRef(false);
 
   const { videoRef, isReady: cameraReady, error: cameraError } = useCamera();
-  const { detectPose, isReady: poseReady, error: poseError } = usePoseDetection();
+  const { detectPose, isReady: poseReady, error: poseError } = usePoseDetection({ modelType: "lite" });
+  const { smoothPoseData } = useLandmarkSmoothing();
+  const { updatePoseData, getInterpolatedPose } = usePoseInterpolation();
 
   const error = cameraError || poseError;
   const isReady = cameraReady && poseReady;
@@ -54,7 +59,44 @@ export default function GameContainer({ game }: GameContainerProps) {
     };
   }, [isReady, game]);
 
-  // Game loop
+  // Detection loop - runs when video frames update
+  useEffect(() => {
+    if (!isReady || !videoRef.current) return;
+
+    const video = videoRef.current;
+
+    function detectionLoop() {
+      if (!video) return;
+
+      const currentTime = video.currentTime;
+
+      // Only detect when video time has changed
+      if (currentTime !== lastVideoTimeRef.current) {
+        lastVideoTimeRef.current = currentTime;
+
+        // Detect pose
+        const rawPoseData = detectPose(video, performance.now());
+
+        // Apply smoothing
+        const smoothedPoseData = smoothPoseData(rawPoseData);
+
+        // Update interpolation with new data
+        updatePoseData(smoothedPoseData, performance.now());
+      }
+
+      detectionFrameRef.current = requestAnimationFrame(detectionLoop);
+    }
+
+    detectionLoop();
+
+    return () => {
+      if (detectionFrameRef.current) {
+        cancelAnimationFrame(detectionFrameRef.current);
+      }
+    };
+  }, [isReady, detectPose, smoothPoseData, updatePoseData]);
+
+  // Render loop - runs at 60fps
   useEffect(() => {
     if (!isReady || !canvasRef.current || !videoRef.current) return;
 
@@ -64,41 +106,34 @@ export default function GameContainer({ game }: GameContainerProps) {
 
     if (!ctx) return;
 
-    function gameLoop() {
-      if (!video || !canvas || !ctx) return;
+    function renderLoop() {
+      if (!canvas || !ctx) return;
 
-      const currentTime = video.currentTime;
+      // Get interpolated pose data for current time
+      const interpolatedPoseData = getInterpolatedPose(performance.now());
 
-      // Only process if video time has changed
-      if (currentTime !== lastVideoTimeRef.current) {
-        lastVideoTimeRef.current = currentTime;
+      // Create game context
+      const context: GameContext = {
+        canvas,
+        ctx,
+        videoWidth: video.videoWidth,
+        videoHeight: video.videoHeight
+      };
 
-        // Detect pose
-        const poseData = detectPose(video, performance.now());
+      // Call game's frame handler with interpolated data
+      game.onFrame(context, interpolatedPoseData);
 
-        // Create game context
-        const context: GameContext = {
-          canvas,
-          ctx,
-          videoWidth: video.videoWidth,
-          videoHeight: video.videoHeight
-        };
-
-        // Call game's frame handler
-        game.onFrame(context, poseData);
-      }
-
-      animationFrameRef.current = requestAnimationFrame(gameLoop);
+      animationFrameRef.current = requestAnimationFrame(renderLoop);
     }
 
-    gameLoop();
+    renderLoop();
 
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isReady, game, detectPose]);
+  }, [isReady, game, getInterpolatedPose]);
 
   return (
     <div className="flex flex-col items-center gap-4 w-full">
