@@ -130,6 +130,17 @@ export default function GameContainer({ game }: GameContainerProps) {
       // Get interpolated pose data for current time
       const interpolatedPoseData = getInterpolatedPose(performance.now());
 
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw camera background if enabled
+      if (game.metadata.showCameraBackground && video) {
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+        ctx.restore();
+      }
+
       // Create game context
       const context: GameContext = {
         canvas,

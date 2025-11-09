@@ -7,6 +7,7 @@ export interface GameMetadata {
   thumbnail?: string;
   splashArt?: string;
   useHandDetection?: boolean;
+  showCameraBackground?: boolean;
 }
 
 export interface PoseData {
