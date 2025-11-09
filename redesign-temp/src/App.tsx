@@ -7,7 +7,7 @@ export default function App() {
     {
       id: 1,
       title: "2048",
-      subtitle: "Real-time Detection",
+      subtitle: "Hand Swipe",
       description: "See your pose landmarks in real-time",
       gradient: "from-orange-600 via-orange-500 to-amber-600",
       image: "https://images.unsplash.com/photo-1635366400548-05fefa95193b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b2dhJTIwcG9zZSUyMHNpbGhvdWV0dGV8ZW58MXx8fHwxNzYyNjE1MDEzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
