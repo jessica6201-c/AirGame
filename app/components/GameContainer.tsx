@@ -49,9 +49,9 @@ export default function GameContainer({ game }: GameContainerProps) {
 
     if (!ctx) return;
 
-    // Set canvas size to match video
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    // Set canvas size to fullscreen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     const context: GameContext = {
       canvas,
@@ -165,25 +165,23 @@ export default function GameContainer({ game }: GameContainerProps) {
   }, [isReady, game, getInterpolatedPose]);
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
+    <div className="fixed inset-0 w-full h-full">
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
           {error}
         </div>
       )}
 
-      <div className="relative">
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="hidden"
-        />
-        <canvas
-          ref={canvasRef}
-          className="border-2 border-zinc-300 dark:border-zinc-700 rounded-lg max-w-full"
-        />
-      </div>
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        className="hidden"
+      />
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full"
+      />
     </div>
   );
 }
