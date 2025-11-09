@@ -11,11 +11,14 @@ export default function GameSelection({ games, onSelectGame }: GameSelectionProp
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-6xl px-4">
       <div className="text-center">
-        <h1 className="text-5xl font-bold text-black dark:text-white mb-4">
+        <h1 className="text-5xl font-bold text-white mb-4" style={{ textShadow: '0 0 20px rgba(255,255,255,0.5)' }}>
           Air Game
         </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400">
+        <p className="text-lg text-zinc-300" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}>
           Select a game to play using pose detection
+        </p>
+        <p className="text-sm text-zinc-400 mt-2">
+          Move your hands to light up the grid
         </p>
       </div>
 
@@ -24,10 +27,10 @@ export default function GameSelection({ games, onSelectGame }: GameSelectionProp
           <button
             key={game.metadata.id}
             onClick={() => onSelectGame(game)}
-            className="group relative overflow-hidden rounded-lg border-2 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 transition-all hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-lg"
+            className="group relative overflow-hidden rounded-lg border-2 border-zinc-600 bg-zinc-900 bg-opacity-80 backdrop-blur-sm p-6 transition-all hover:border-zinc-400 hover:bg-zinc-800 hover:bg-opacity-90 hover:shadow-lg hover:shadow-blue-500/20"
           >
             {game.metadata.splashArt && (
-              <div className="w-full h-48 mb-4 bg-zinc-200 dark:bg-zinc-800 rounded-md overflow-hidden">
+              <div className="w-full h-48 mb-4 bg-zinc-800 rounded-md overflow-hidden">
                 <img
                   src={game.metadata.splashArt}
                   alt={game.metadata.name}
@@ -37,10 +40,10 @@ export default function GameSelection({ games, onSelectGame }: GameSelectionProp
             )}
 
             <div className="text-left">
-              <h2 className="text-2xl font-bold text-black dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                 {game.metadata.name}
               </h2>
-              <p className="text-zinc-600 dark:text-zinc-400">
+              <p className="text-zinc-300">
                 {game.metadata.description}
               </p>
             </div>
