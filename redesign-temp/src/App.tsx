@@ -86,7 +86,7 @@ export default function App() {
       <div className="relative z-10 flex flex-col items-center justify-between min-h-screen pt-[13rem] px-8 pb-16">
         {/* Title */}
         <div className="text-center">
-          <h1 className="arcade-title mb-2">AIRGAME</h1>
+          <h1 className="arcade-title mb-2">AIRCADE</h1>
           
           {/* Subtitle */}
           <p className="arcade-subtitle mb-12">SELECT A GAME TO PLAY USING GESTURES</p>

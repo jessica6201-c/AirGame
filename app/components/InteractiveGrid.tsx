@@ -198,7 +198,7 @@ export default function InteractiveGrid({ onShowGames }: InteractiveGridProps) {
       <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
         <div className="text-center text-white mb-8">
           <h1 className="text-6xl font-bold mb-4" style={{ textShadow: '0 0 20px rgba(255,255,255,0.5)' }}>
-            AirGame
+            AIRCADE
           </h1>
           <p className="text-xl opacity-75" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}>
             Move your hands to light up the grid

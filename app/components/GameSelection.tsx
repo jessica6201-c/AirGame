@@ -24,7 +24,7 @@ export default function GameSelection({ games, onSelectGame }: GameSelectionProp
     <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-8 py-16">
       {/* Title */}
       <div className="text-center mb-16">
-        <h1 className="arcade-title mb-2">AIRGAME</h1>
+        <h1 className="arcade-title mb-2">AIRCADE</h1>
 
         {/* Subtitle */}
         <p className="arcade-subtitle mb-0">SELECT A GAME TO PLAY USING GESTURES</p>
