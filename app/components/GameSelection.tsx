@@ -64,15 +64,7 @@ export default function GameSelection({ games, onSelectGame }: GameSelectionProp
             </div>
 
             {/* Card Content */}
-            <div className="relative z-10 p-6 h-full flex flex-col justify-between">
-              {/* Rating Badge */}
-              <div className="flex justify-end">
-                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                  <span className="text-yellow-400 text-sm">★</span>
-                  <span className="arcade-rating text-white">5.0</span>
-                </div>
-              </div>
-
+            <div className="relative z-10 p-6 h-full flex flex-col justify-end">
               {/* Title and Subtitle */}
               <div>
                 <h2 className="arcade-card-title text-white mb-1 text-2xl">{game.metadata.name.toUpperCase()}</h2>
